@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{8C339022-ABBC-4423-ACED-4272CEE9C9DF}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>MERX</RootNamespace>
+        <AssemblyName>MERXEditor</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Newtonsoft.Json">
+          <HintPath>Dependencies\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.IO.Compression" />
+        <Reference Include="System.IO.Compression.FileSystem" />
+        <Reference Include="System.Xml"/>
+        <Reference Include="UnityEditor">
+          <HintPath>Dependencies\UnityEditor.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+          <HintPath>Dependencies\UnityEngine.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Features\Editor\SchematicExtensionBaseEditor.cs" />
+        <Compile Include="Features\Editor\SchematicExtensionManagerEditor.cs" />
+        <Compile Include="Features\Enums\DamageType.cs" />
+        <Compile Include="Features\Enums\DeathType.cs" />
+        <Compile Include="Features\Enums\ExtensionType.cs" />
+        <Compile Include="Features\Enums\RoleTypeId.cs" />
+        <Compile Include="Features\Extensions\DamageableSchematic.cs" />
+        <Compile Include="Features\SchematicExtensionBase.cs" />
+        <Compile Include="Features\SchematicExtensionManager.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\AllowNestingAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\AnimatorParamAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\CurveRangeAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\DrawerAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\DropdownAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\EnumFlagsAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\Expandable.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\HorizontalLineAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\InfoBoxAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\InputAxisAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\LayerAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\MinMaxSliderAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\ProgressBarAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\ResizableTextAreaAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\SceneAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\ShowAssetPreviewAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\SortingLayerAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes\TagAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes_SpecialCase\ButtonAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes_SpecialCase\ReorderableListAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes_SpecialCase\ShowNativePropertyAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes_SpecialCase\ShowNonSerializedFieldAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\DrawerAttributes_SpecialCase\SpecialCaseDrawerAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\INaughtyAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\BoxGroupAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\DisableIfAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\EnableIfAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\EnableIfAttributeBase.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\FoldoutAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\HideIfAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\IGroupAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\LabelAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\MetaAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\OnValueChangedAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\ReadOnlyAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\ShowIfAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\MetaAttributes\ShowIfAttributeBase.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\Utility\EColor.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\Utility\EConditionOperator.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\ValidatorAttributes\MaxValueAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\ValidatorAttributes\MinValueAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\ValidatorAttributes\RequiredAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\ValidatorAttributes\ValidateInputAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Core\ValidatorAttributes\ValidatorAttribute.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\DecoratorDrawers\HorizontalLineDecoratorDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\DecoratorDrawers\InfoBoxDecoratorDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\NaughtyInspector.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\AllowNestingPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\AnimatorParamPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\CurveRangePropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\DropdownPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\EnumFlagsPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\ExpandablePropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\InputAxisPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\LayerPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\MinMaxSliderPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\ProgressBarPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\PropertyDrawerBase.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\ResizableTextAreaPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\ScenePropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\ShowAssetPreviewPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\SortingLayerPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers\TagPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers_SpecialCase\ReorderableListPropertyDrawer.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyDrawers_SpecialCase\SpecialCasePropertyDrawerBase.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyValidators\MaxValuePropertyValidator.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyValidators\MinValuePropertyValidator.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyValidators\PropertyValidatorBase.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyValidators\RequiredPropertyValidator.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\PropertyValidators\ValidateInputPropertyValidator.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\Utility\ButtonUtility.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\Utility\NaughtyEditorGUI.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\Utility\PropertyUtility.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\Utility\ReflectionUtility.cs" />
+        <Compile Include="NaughtyAttributes\Scripts\Editor\Utility\SavedBool.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Dependencies\Newtonsoft.Json.dll" />
+      <Content Include="Dependencies\UnityEditor.dll" />
+      <Content Include="Dependencies\UnityEngine.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Features\Misc\" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>
