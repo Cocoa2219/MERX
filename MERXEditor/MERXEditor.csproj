@@ -53,6 +53,7 @@
     <ItemGroup>
         <Compile Include="Features\Editor\SchematicExtensionBaseEditor.cs" />
         <Compile Include="Features\Editor\SchematicExtensionManagerEditor.cs" />
+        <Compile Include="Features\Enums\BroadcastType.cs" />
         <Compile Include="Features\Enums\DamageType.cs" />
         <Compile Include="Features\Enums\DeathType.cs" />
         <Compile Include="Features\Enums\ExtensionType.cs" />

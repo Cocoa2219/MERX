@@ -34,6 +34,9 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\AppData\Roaming\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>..\packages\ExMod.Exiled.9.0.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
@@ -62,7 +65,10 @@
           <HintPath>..\packages\ExMod.Exiled.9.0.1\lib\net48\Exiled.Permissions.dll</HintPath>
         </Reference>
         <Reference Include="MapEditorReborn">
-          <HintPath>Dependencies\MapEditorReborn.dll</HintPath>
+          <HintPath>Dependencies\MapEditorReborn-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror">
+          <HintPath>Dependencies\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="NorthwoodLib, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
           <HintPath>..\packages\ExMod.Exiled.9.0.1\lib\net48\NorthwoodLib.dll</HintPath>
@@ -74,12 +80,25 @@
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
+        <Reference Include="UnityEngine">
+          <HintPath>..\MERXEditor\Dependencies\UnityEngine.dll</HintPath>
+        </Reference>
         <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
           <HintPath>..\packages\ExMod.Exiled.9.0.1\lib\net48\YamlDotNet.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Config.cs" />
+        <Compile Include="Features\Decompilers\DamageableExtensionDecompiler.cs" />
+        <Compile Include="Features\Decompilers\ExtensionData.cs" />
+        <Compile Include="Features\Decompilers\ReadableData.cs" />
+        <Compile Include="Features\Enums\BroadcastType.cs" />
+        <Compile Include="Features\Enums\DeathType.cs" />
+        <Compile Include="Features\Enums\ExtensionType.cs" />
+        <Compile Include="Features\Extensions\DamageableExtension.cs" />
+        <Compile Include="Features\SchematicExtensionBase.cs" />
+        <Compile Include="Features\SchematicExtensionDecompilerBase.cs" />
+        <Compile Include="Patches\CreateRecursivePatch.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
@@ -87,7 +106,13 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="Dependencies\MapEditorReborn.dll" />
+      <Content Include="Dependencies\MapEditorReborn-Publicized.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\MERXEditor\MERXEditor.csproj">
+        <Project>{8c339022-abbc-4423-aced-4272cee9c9df}</Project>
+        <Name>MERXEditor</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
