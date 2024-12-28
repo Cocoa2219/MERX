@@ -5,6 +5,7 @@
     /// </summary>
     public enum ExtensionType
     {
-        Damageable
+        Damageable,
+        Interactable,
     }
 }

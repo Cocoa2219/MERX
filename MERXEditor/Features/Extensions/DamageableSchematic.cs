@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MERX.Features.Enums;
+using MERX.Features.Misc.Opus;
 using NaughtyAttributes;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +22,9 @@ namespace MERX.Features.Extensions
         public override bool Compile(bool suppressLogs = false)
         {
             CheckHitboxes();
+            m_rolesIgnored = CheckDuplicates(m_rolesIgnored, "There are duplicate roles in the ignored roles list.");
+            m_damageTypesIgnored = CheckDuplicates(m_damageTypesIgnored,
+                "There are duplicate damage types in the ignored damage types list.");
 
             var parentDirectoryPath = Directory.Exists(SchematicManager.Config.ExportPath)
                 ? SchematicManager.Config.ExportPath
@@ -43,12 +46,10 @@ namespace MERX.Features.Extensions
 
             if (m_hitboxes.Count == 0)
             {
-                var ask = EditorUtility.DisplayDialog("No Hitboxes", "There are no hitboxes on this object. Do you want to continue?", "Yes", "No");
+                var ask = EditorUtility.DisplayDialog("No Hitboxes",
+                    "There are no hitboxes on this object. Do you want to continue?", "Yes", "No");
 
-                if (!ask)
-                {
-                    return false;
-                }
+                if (!ask) return false;
             }
 
             using var fileStream = File.Create(Path.Combine(schematicDirectoryPath, $"{name}-Damageables.merx"));
@@ -67,7 +68,7 @@ namespace MERX.Features.Extensions
                     writer.Close();
                     fileStream.Close();
 
-                    File.Delete(Path.Combine(schematicDirectoryPath, $"{name}-Damageables.merx"));
+                    File.Delete(Path.Combine(schematicDirectoryPath, $"{name}-Damageable.merx"));
 
                     return false;
                 }
@@ -77,39 +78,23 @@ namespace MERX.Features.Extensions
             }
 
             writer.Write(m_damageTypesIgnored.Count);
-            foreach (var damageType in m_damageTypesIgnored)
-            {
-                writer.Write((byte)damageType);
-            }
+            foreach (var damageType in m_damageTypesIgnored) writer.Write((byte)damageType);
 
             writer.Write(m_rolesIgnored.Count);
-            foreach (var role in m_rolesIgnored)
-            {
-                writer.Write((byte)role);
-            }
+            foreach (var role in m_rolesIgnored) writer.Write((byte)role);
 
             writer.Write((byte)m_deathType);
 
             if (m_deathType.HasFlag(DeathType.Broadcast))
-            {
                 m_broadcastOptions.Write(writer);
-            }
-            else if (m_deathType.HasFlag(DeathType.SpawnItem))
-            {
+            if (m_deathType.HasFlag(DeathType.SpawnItem))
                 m_spawnItemOptions.Write(writer);
-            }
-            else if (m_deathType.HasFlag(DeathType.Explode))
-            {
+            if (m_deathType.HasFlag(DeathType.Explode))
                 m_explosionOptions.Write(writer);
-            }
-            else if (m_deathType.HasFlag(DeathType.PlaySound))
-            {
+            if (m_deathType.HasFlag(DeathType.PlaySound))
                 m_playSoundOptions.Write(writer);
-            }
-            else if (m_deathType.HasFlag(DeathType.Dynamic))
-            {
+            if (m_deathType.HasFlag(DeathType.Dynamic))
                 m_dynamicOptions.Write(writer);
-            }
 
             if (!suppressLogs)
                 Debug.Log($"<color=#00FF00>Successfully compiled damageable schematic <b>{name}</b>!</color>");
@@ -143,24 +128,19 @@ namespace MERX.Features.Extensions
         [Tooltip("The maximum health of the object. Object will reset to this value when spawned.")]
         private int m_maxHealth = 100;
 
-        [SerializeField]
-        [Tooltip("Determines if the object is invincible.")]
-        private bool m_isInvincible = false;
+        [SerializeField] [Tooltip("Determines if the object is invincible.")]
+        private bool m_isInvincible;
 
-        [SerializeField]
-        [Tooltip("Hitboxes of the object.")]
-        private List<Hitbox> m_hitboxes = new List<Hitbox>();
+        [SerializeField] [Tooltip("Hitboxes of the object.")]
+        private List<Hitbox> m_hitboxes = new();
 
-        [SerializeField]
-        [Tooltip("List of damage types that the object is immune to.")]
-        private List<DamageType> m_damageTypesIgnored = new List<DamageType>();
+        [SerializeField] [Tooltip("List of damage types that the object is immune to.")]
+        private List<DamageType> m_damageTypesIgnored = new();
 
-        [SerializeField]
-        [Tooltip("List of roles that the object is immune to.")]
-        private List<RoleTypeId> m_rolesIgnored = new List<RoleTypeId>();
+        [SerializeField] [Tooltip("List of roles that the object is immune to.")]
+        private List<RoleTypeId> m_rolesIgnored = new();
 
         [Space]
-
         [Header("Death Settings")]
         [SerializeField]
         [Tooltip("Determines what happens when the object dies (the health reaches 0 or below).")]
@@ -169,43 +149,54 @@ namespace MERX.Features.Extensions
         [SerializeField]
         [Tooltip("Options for broadcasting a message when the object dies.")]
         [ShowIf("m_deathType", DeathType.Broadcast)]
-        private BroadcastOptions m_broadcastOptions = new BroadcastOptions();
+        private BroadcastOptions m_broadcastOptions = new();
 
         [SerializeField]
         [Tooltip("Options for spawning items when the object dies.")]
         [ShowIf("m_deathType", DeathType.SpawnItem)]
-        private SpawnItemOptions m_spawnItemOptions = new SpawnItemOptions();
+        private SpawnItemOptions m_spawnItemOptions = new();
 
         [SerializeField]
         [Tooltip("Options for exploding when the object dies.")]
         [ShowIf("m_deathType", DeathType.Explode)]
-        private ExplosionOptions m_explosionOptions = new ExplosionOptions();
+        private ExplosionOptions m_explosionOptions = new();
 
         [SerializeField]
         [Tooltip("Options for playing sounds when the object dies.")]
         [ShowIf("m_deathType", DeathType.PlaySound)]
-        private PlaySoundOptions m_playSoundOptions = new PlaySoundOptions();
+        private PlaySoundOptions m_playSoundOptions = new();
 
         [SerializeField]
         [Tooltip("Options for executing dynamic code when the object dies.")]
         [ShowIf("m_deathType", DeathType.Dynamic)]
-        private DynamicOptions m_dynamicOptions = new DynamicOptions();
+        private DynamicOptions m_dynamicOptions = new();
 
         private void OnValidate()
         {
             CheckHitboxes();
+            m_rolesIgnored = CheckDuplicates(m_rolesIgnored, "There are duplicate roles in the ignored roles list.");
+            m_damageTypesIgnored = CheckDuplicates(m_damageTypesIgnored,
+                "There are duplicate damage types in the ignored damage types list.");
+        }
+
+        private List<T> CheckDuplicates<T>(List<T> list, string message)
+        {
+            if (list.Count != list.Distinct().Count())
+            {
+                EditorUtility.DisplayDialog("Duplicate Values", message, "OK");
+            }
+
+            return list.Distinct().ToList();
         }
 
         private void CheckHitboxes()
         {
             if (m_hitboxes.Any(x => x.Primitive != null && x.Primitive.Collidable == false))
             {
-                var invalidHitboxes = m_hitboxes.Where(x => x.Primitive != null && x.Primitive.Collidable == false).ToList();
+                var invalidHitboxes = m_hitboxes.Where(x => x.Primitive != null && x.Primitive.Collidable == false)
+                    .ToList();
 
-                foreach (var hitbox in invalidHitboxes)
-                {
-                    hitbox.Primitive = null;
-                }
+                foreach (var hitbox in invalidHitboxes) hitbox.Primitive = null;
 
                 EditorUtility.DisplayDialog("Invalid Hitbox", "Hitboxes cannot have collidable set to false.", "OK");
             }
@@ -214,7 +205,7 @@ namespace MERX.Features.Extensions
         #endregion
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Hitbox
     {
         public PrimitiveComponent Primitive;
@@ -226,12 +217,12 @@ namespace MERX.Features.Extensions
         public abstract void Write(BinaryWriter writer);
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BroadcastOptions : DeathOptions
     {
         public List<BroadcastMessage> Messages;
 
-        [System.Serializable]
+        [Serializable]
         public class BroadcastMessage
         {
             public string Message;
@@ -241,7 +232,7 @@ namespace MERX.Features.Extensions
             public enum BroadcastType
             {
                 Attacker,
-                ToAll,
+                ToAll
             }
         }
 
@@ -257,12 +248,12 @@ namespace MERX.Features.Extensions
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class SpawnItemOptions : DeathOptions
     {
         public List<ItemSpawn> Items;
 
-        [System.Serializable]
+        [Serializable]
         public struct ItemSpawn
         {
             public ItemType Item;
@@ -280,12 +271,12 @@ namespace MERX.Features.Extensions
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class ExplosionOptions : DeathOptions
     {
         public List<Explosion> Explosions;
 
-        [System.Serializable]
+        [Serializable]
         public class Explosion
         {
             public float MaxRadius;
@@ -309,12 +300,12 @@ namespace MERX.Features.Extensions
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class PlaySoundOptions : DeathOptions
     {
         public List<Sound> Sounds;
 
-        [System.Serializable]
+        [Serializable]
         public class Sound
         {
             public AudioClip Clip;
@@ -343,10 +334,7 @@ namespace MERX.Features.Extensions
             writer.Write(Sounds.Count);
             foreach (var sound in Sounds)
             {
-                if (sound.Clip == null)
-                {
-                    continue;
-                }
+                if (sound.Clip == null) continue;
 
                 if (sound.Clip.frequency != 48000 || sound.Clip.channels != 1)
                 {
@@ -354,6 +342,17 @@ namespace MERX.Features.Extensions
                     continue;
                 }
 
+                using var encoder = new OpusEncoder(OpusApplicationType.Voip);
+                var data = new byte[sound.Clip.samples * 2];
+                var samples = new float[sound.Clip.samples];
+
+                sound.Clip.GetData(samples, 0);
+
+                var encoded = new byte[encoder.Encode(samples, data)];
+
+                File.WriteAllBytes(Path.Combine(directory, $"{sound.Clip.name}.audio"), encoded);
+
+                writer.Write(sound.Clip.name);
                 writer.Write(sound.Volume);
                 writer.Write(sound.IsSpatial);
                 writer.Write(sound.MinDistance);
@@ -362,12 +361,12 @@ namespace MERX.Features.Extensions
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class DynamicOptions : DeathOptions
     {
         public List<DynamicExecution> Exec;
 
-        [System.Serializable]
+        [Serializable]
         public class DynamicExecution
         {
             public string Code;
@@ -376,10 +375,7 @@ namespace MERX.Features.Extensions
         public override void Write(BinaryWriter writer)
         {
             writer.Write(Exec.Count);
-            foreach (var exec in Exec)
-            {
-                writer.Write(exec.Code);
-            }
+            foreach (var exec in Exec) writer.Write(exec.Code);
         }
     }
 }
